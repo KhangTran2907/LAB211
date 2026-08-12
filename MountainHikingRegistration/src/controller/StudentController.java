@@ -158,6 +158,62 @@ public class StudentController extends ArrayList<Student> {
         this.saved = false;
         System.out.println("Update registration successfully!");
     }
+    
+        public void showAll() {
+        showAll(this);
+    }
+
+    public void showAll(java.util.List<Student> list) {
+        if (list.isEmpty()) {
+            System.out.println("No students have registered yet.");
+            return;
+        }
+        
+        String HEADER_TABLE = "Student ID | Name                 | Phone      | Peak Code| Fee";
+        String FOOTER_TABLE = "-------------------------------------------------------------------------";
+        
+        System.out.println("Registered Students:");
+        System.out.println(FOOTER_TABLE);
+        System.out.println(HEADER_TABLE);
+        System.out.println(FOOTER_TABLE);
+        
+        for (Student i : list) {
+            System.out.println(i);
+        }
+        
+        System.out.println(FOOTER_TABLE);
+    }
+    
+        public void deleteRegistration() {
+        utils.Inputter inputter = new utils.Inputter();
+        String id = inputter.inputAndLoop("Enter Student ID to delete: ", utils.Acceptable.STU_ID_VALID).toUpperCase();
+        
+        Student target = null;
+        for (Student s : this) {
+            if (s.getID().equalsIgnoreCase(id)) {
+                target = s;
+                break;
+            }
+        }
+            if (target == null) {
+            System.out.println("This student has not registered yet.");
+            return; 
+        }
+        System.out.println("Student Details:");
+        System.out.println("Student ID: " + target.getID());
+        System.out.println("Name : " + target.getName());
+        System.out.println("Phone : " + target.getPhone());
+        System.out.println("Mountain : " + target.getMountainCode());
+        System.out.println("Fee : " + String.format("%,.0f", target.getTutionFee()));
+        
+        String confirm = inputter.getString("Are you sure you want to delete this registration? (Y/N): ");
+        if (confirm.equalsIgnoreCase("Y")) {
+            this.remove(target);
+            this.saved = false;
+            System.out.println("The registration has been successfully deleted.");
+        }
+    }
+    
     public void searchByName() {
         utils.Inputter inputter = new utils.Inputter();
         String searchStr = inputter.getString("Enter name to search: ").toLowerCase();
@@ -183,60 +239,5 @@ public class StudentController extends ArrayList<Student> {
         }
     }
 
-    public void deleteRegistration() {
-        utils.Inputter inputter = new utils.Inputter();
-        String id = inputter.inputAndLoop("Enter Student ID to delete: ", utils.Acceptable.STU_ID_VALID).toUpperCase();
-        
-        Student target = null;
-        for (Student s : this) {
-            if (s.getID().equalsIgnoreCase(id)) {
-                target = s;
-                break;
-            }
-        }
-        
-        if (target == null) {
-            System.out.println("This student has not registered yet.");
-            return;
-        }
-        
-        System.out.println("Student Details:");
-        System.out.println("Student ID: " + target.getID());
-        System.out.println("Name : " + target.getName());
-        System.out.println("Phone : " + target.getPhone());
-        System.out.println("Mountain : " + target.getMountainCode());
-        System.out.println("Fee : " + String.format("%,.0f", target.getTutionFee()));
-        
-        String confirm = inputter.getString("Are you sure you want to delete this registration? (Y/N): ");
-        if (confirm.equalsIgnoreCase("Y")) {
-            this.remove(target);
-            this.saved = false;
-            System.out.println("The registration has been successfully deleted.");
-        }
-    }
 
-    public void showAll() {
-        showAll(this);
-    }
-
-    public void showAll(java.util.List<Student> list) {
-        if (list.isEmpty()) {
-            System.out.println("No students have registered yet.");
-            return;
-        }
-        
-        String HEADER_TABLE = "Student ID | Name                 | Phone      | Peak Code| Fee";
-        String FOOTER_TABLE = "-------------------------------------------------------------------------";
-        
-        System.out.println("Registered Students:");
-        System.out.println(FOOTER_TABLE);
-        System.out.println(HEADER_TABLE);
-        System.out.println(FOOTER_TABLE);
-        
-        for (Student i : list) {
-            System.out.println(i);
-        }
-        
-        System.out.println(FOOTER_TABLE);
-    }
 }
