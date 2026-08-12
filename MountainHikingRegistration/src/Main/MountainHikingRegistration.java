@@ -53,8 +53,7 @@ public class MountainHikingRegistration {
                     studentController.deleteRegistration();
                     break;
                 case 5:
-                    System.out.println("Function 5 is under construction...");
-                    // studentController.searchByName();
+                    studentController.searchByName();
                     break;
                 case 6:
                     System.out.println("Function 6 is under construction...");

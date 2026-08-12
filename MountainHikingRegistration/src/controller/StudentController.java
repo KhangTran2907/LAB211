@@ -158,6 +158,31 @@ public class StudentController extends ArrayList<Student> {
         this.saved = false;
         System.out.println("Update registration successfully!");
     }
+    public void searchByName() {
+        utils.Inputter inputter = new utils.Inputter();
+        String searchStr = inputter.getString("Enter name to search: ").toLowerCase();
+        
+        boolean found = false;
+        for (Student s : this) {
+            if (s.getName().toLowerCase().contains(searchStr)) {
+                if (!found) {
+                    System.out.println("Matching Students:");
+                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("Student ID | Name                 | Phone      | Peak Code| Fee");
+                    System.out.println("-------------------------------------------------------------------------");
+                    found = true;
+                }
+                System.out.println(s);
+            }
+        }
+        
+        if (found) {
+            System.out.println("-------------------------------------------------------------------------");
+        } else {
+            System.out.println("No one matches the search criteria!");
+        }
+    }
+
     public void deleteRegistration() {
         utils.Inputter inputter = new utils.Inputter();
         String id = inputter.inputAndLoop("Enter Student ID to delete: ", utils.Acceptable.STU_ID_VALID).toUpperCase();
