@@ -56,22 +56,20 @@ public class MountainHikingRegistration {
                     studentController.searchByName();
                     break;
                 case 6:
-                    System.out.println("Function 6 is under construction...");
-                    // studentController.filterByCampus();
+                    studentController.filterByCampus();
                     break;
                 case 7:
-                    System.out.println("Function 7 is under construction...");
-                    // studentController.showStatistics();
+                    studentController.showStatistics();
                     break;
                 case 8:
                     studentController.saveToFile();
-                    System.out.println("Data saved successfully!");
+                    System.out.println("Registration data has been successfully saved to registrations.dat.");
                     break;
                 case 9:
-                    System.out.println("Exiting the program...");
+                    studentController.exitProgram(inputter);
                     break;
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 9.");
+                    System.out.println("This function is not available.");
             }
         } while (choice != 9);
     }
