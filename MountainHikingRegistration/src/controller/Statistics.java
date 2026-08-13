@@ -15,11 +15,12 @@ import model.Student;
  */
 public class Statistics extends HashMap<String, StatisticalInfo>{
     private final String HEADER_TABLE =
-            "|--------------------------------------------------------------|\n"+
-            "|    PEAK NAME      | Number of Participants |     Total Cost  |\n"+
-            "|-------------------|------------------------|-----------------|";
+            "Statistics of Registration by Mountain Peak:\n\n"+
+            "-------------------------------------------------------------------------\n"+
+            "Peak Name        | Number of Participants | Total Cost\n"+
+            "-------------------------------------------------------------------------";
     private final String FOOTER_TABLE = 
-            "|--------------------------------------------------------------|";
+            "-------------------------------------------------------------------------";
 
     public Statistics() {
         super();

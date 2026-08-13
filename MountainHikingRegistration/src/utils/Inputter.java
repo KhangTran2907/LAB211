@@ -103,7 +103,7 @@ public class Inputter {
         double tuitionFee = 6000000;
         if (target.getPhone().matches(Acceptable.VIETTEL_VALID) || target.getPhone().matches(Acceptable.VNPT_VALID)) {
             tuitionFee = tuitionFee * 0.65;
-            System.out.println("Congratulations! You get a 35% discount (Viettel/VNPT).");
+            System.out.println("You get a 35% discount.");
         }
         target.setTutionFee(tuitionFee);
     }

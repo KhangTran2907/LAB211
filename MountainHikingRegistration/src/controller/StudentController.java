@@ -25,22 +25,6 @@ public class StudentController extends ArrayList<Student> {
     private String pathFile = "Registration.dat";
     private boolean saved = true;
 
-    public boolean isSaved() {
-        return this.saved;
-    }
-
-    public void exitProgram(utils.Inputter inputter) {
-        if (!this.isSaved()) {
-            System.out.println("You have unsaved changes.");
-            String confirm = inputter.getString("Do you want to save the changes before exiting? (Y/N): ");
-            if (confirm.equalsIgnoreCase("Y")) {
-                this.saveToFile();
-                System.out.println("Registration data has been successfully saved to registrations.dat.");
-            }
-        }
-        System.out.println("Exiting the program...");
-    }
-
     /**
      * Đọc và nạp dữ liệu từ file Registration.dat vào danh sách sinh viên đã đăng ký
      */
@@ -200,51 +184,6 @@ public class StudentController extends ArrayList<Student> {
         System.out.println(FOOTER_TABLE);
     }
     
-        public void filterByCampus() {
-        utils.Inputter inputter = new utils.Inputter();
-        String code = inputter.getString("Enter campus code (CE, DE, HE, SE, QE): ").toUpperCase();
-        
-        String campusName = "";
-        switch (code) {
-            case "CE": campusName = "Can Tho"; break;
-            case "DE": campusName = "Da Nang"; break;
-            case "HE": campusName = "Ha Noi"; break;
-            case "SE": campusName = "Ho Chi Minh"; break;
-            case "QE": campusName = "Quy Nhon"; break;
-            default:
-                System.out.println("Invalid campus code!");
-                return;
-        }
-        
-        boolean found = false;
-        for (Student s : this) {
-            if (s.getID().toUpperCase().startsWith(code)) {
-                if (!found) {
-                    System.out.println("Registered Students Under " + campusName + " Campus (" + code + "):");
-                    System.out.println("-------------------------------------------------------------------------");
-                    System.out.println("Student ID | Name                 | Phone      | Peak Code| Fee");
-                    System.out.println("-------------------------------------------------------------------------");
-                    found = true;
-                }
-                System.out.println(s);
-            }
-        }
-        
-        if (found) {
-            System.out.println("-------------------------------------------------------------------------");
-        } else {
-            System.out.println("No students have registered under this campus.");
-        }
-    }
-
-    public void showStatistics() {
-        if (this.isEmpty()) {
-            System.out.println("No students have registered yet.");
-            return;
-        }
-        controller.Statistics stats = new controller.Statistics(this);
-        stats.show();
-    }
 
     public void deleteRegistration() {
         utils.Inputter inputter = new utils.Inputter();
@@ -301,5 +240,67 @@ public class StudentController extends ArrayList<Student> {
         }
     }
 
+    
+            public void filterByCampus() {
+        utils.Inputter inputter = new utils.Inputter();
+        String code = inputter.getString("Enter campus code (CE, DE, HE, SE, QE): ").toUpperCase();
+        
+        String campusName = "";
+        switch (code) {
+            case "CE": campusName = "Can Tho"; break;
+            case "DE": campusName = "Da Nang"; break;
+            case "HE": campusName = "Ha Noi"; break;
+            case "SE": campusName = "Ho Chi Minh"; break;
+            case "QE": campusName = "Quy Nhon"; break;
+            default:
+                System.out.println("Invalid campus code!");
+                return;
+        }
+        
+        boolean found = false;
+        for (Student s : this) {
+            if (s.getID().toUpperCase().startsWith(code)) {
+                if (!found) {
+                    System.out.println("Registered Students Under " + campusName + " Campus (" + code + "):");
+                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("Student ID | Name                 | Phone      | Peak Code| Fee");
+                    System.out.println("-------------------------------------------------------------------------");
+                    found = true;
+                }
+                System.out.println(s);
+            }
+        }
+        
+        if (found) {
+            System.out.println("-------------------------------------------------------------------------");
+        } else {
+            System.out.println("No students have registered under this campus.");
+        }
+    }
+
+    public void showStatistics() {
+        if (this.isEmpty()) {
+            System.out.println("No students have registered yet.");
+            return;
+        }
+        controller.Statistics stats = new controller.Statistics(this);
+        stats.show();
+    }
+    
+        public boolean isSaved() {
+        return this.saved;
+    }
+
+    public void exitProgram(utils.Inputter inputter) {
+        if (!this.isSaved()) {
+            System.out.println("You have unsaved changes.");
+            String confirm = inputter.getString("Do you want to save the changes before exiting? (Y/N): ");
+            if (confirm.equalsIgnoreCase("Y")) {
+                this.saveToFile();
+                System.out.println("Registration data has been successfully saved to registrations.dat.");
+            }
+        }
+        System.out.println("Exiting the program...");
+    }
 
 }

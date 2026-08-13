@@ -67,33 +67,6 @@ public class MountainController extends ArrayList<Mountain> {
     }
 
     /**
-     * Ghi danh sách Mountain hiện tại xuống file CSV
-     */
-    public void saveToFile() {
-        if (this.isEmpty()) {
-            System.out.println("Danh sách trống, không có gì để lưu.");
-            return;
-        }
-        try {
-            File f = new File(this.pathFile);
-            FileWriter fw = new FileWriter(f);
-            PrintWriter pw = new PrintWriter(fw);
-            
-            for (Mountain m : this) {
-                // Bạn có thể chỉnh sửa định dạng ngăn cách bằng dấu phẩy theo ý muốn
-                pw.println(m.getMountainCode() + "," + m.getMountain() + "," + m.getProvince() + "," + m.getDescription());
-            }
-            
-            pw.close();
-            fw.close();
-            System.out.println("Lưu dữ liệu Mountain thành công vào " + this.pathFile);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MountainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
      * Hàm này chuyển đổi 1 dòng text thành 1 đối tượng Mountain
      */
     private Mountain dataToObject(String temp) {

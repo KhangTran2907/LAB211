@@ -80,7 +80,7 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "student{" + "ID=" + ID + ", name=" + name + ", phone=" + phone + ", email=" + email + ", mountainCode=" + mountainCode + ", tutionFee=" + tutionFee + '}';
+        return String.format("%-10s | %-20s | %-10s | %-9s| %,.0f", ID, name, phone, mountainCode, tutionFee);
     }
     
     
