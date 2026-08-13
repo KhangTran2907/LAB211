@@ -63,10 +63,9 @@ public class MountainHikingRegistration {
                     break;
                 case 8:
                     studentController.saveToFile();
-                    System.out.println("Registration data has been successfully saved to registrations.dat.");
                     break;
                 case 9:
-                    studentController.exitProgram(inputter);
+                    choice = studentController.exitProgram(inputter);
                     break;
                 default:
                     System.out.println("This function is not available.");

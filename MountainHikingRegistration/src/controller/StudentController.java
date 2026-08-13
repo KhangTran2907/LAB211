@@ -95,6 +95,7 @@ public class StudentController extends ArrayList<Student> {
             oos.close();
             //--- 6. Ghi nhận trạng thái là lưu thành công
             this.saved = true;
+            System.out.println("Registration data has been successfully saved to registrations.dat.");
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(StudentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -291,16 +292,25 @@ public class StudentController extends ArrayList<Student> {
         return this.saved;
     }
 
-    public void exitProgram(utils.Inputter inputter) {
+    public int exitProgram(utils.Inputter inputter) {
         if (!this.isSaved()) {
-            System.out.println("You have unsaved changes.");
             String confirm = inputter.getString("Do you want to save the changes before exiting? (Y/N): ");
             if (confirm.equalsIgnoreCase("Y")) {
                 this.saveToFile();
-                System.out.println("Registration data has been successfully saved to registrations.dat.");
+                System.out.println("Exiting the program...");
+                return 9;
+            } else {
+                String confirm2 = inputter.getString("You have unsaved changes. Are you sure you want to exit without saving? (Y/N): ");
+                if (confirm2.equalsIgnoreCase("Y")) {
+                    System.out.println("Exiting the program...");
+                    return 9;
+                } else {
+                    return 0;
+                }
             }
         }
         System.out.println("Exiting the program...");
+        return 9;
     }
 
 }
