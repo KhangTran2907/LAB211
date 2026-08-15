@@ -51,40 +51,43 @@ public class Inputter {
         return result.trim();
     }
     
-    public void enterStudentInfo(model.Student target, controller.MountainController mountainController, boolean isUpdate) {
+    public String getStudentName(boolean isUpdate) {
         while (true) {
             String name = this.getString(isUpdate ? "Update Student name (or Enter to skip): " : "Student name: ");
-            if (isUpdate && name.trim().isEmpty()) break;
+            if (isUpdate && name.trim().isEmpty()) return "";
             if (Acceptable.isValid(name, Acceptable.NAME_VALID)) {
-                target.setName(name);
-                break;
+                return name;
             }
             System.out.println("Data is invalid!. Re-enter ...");
         }
-        
+    }
+    
+    public String getStudentPhone(boolean isUpdate) {
         while (true) {
             String phone = this.getString(isUpdate ? "Update Phone number (or Enter to skip): " : "Phone number [10 digits]: ");
-            if (isUpdate && phone.trim().isEmpty()) break;
+            if (isUpdate && phone.trim().isEmpty()) return "";
             if (Acceptable.isValid(phone, Acceptable.PHONE_VALID)) {
-                target.setPhone(phone);
-                break;
+                return phone;
             }
             System.out.println("Data is invalid!. Re-enter ...");
         }
-        
+    }
+    
+    public String getStudentEmail(boolean isUpdate) {
         while (true) {
             String email = this.getString(isUpdate ? "Update Email address (or Enter to skip): " : "Email address: ");
-            if (isUpdate && email.trim().isEmpty()) break;
+            if (isUpdate && email.trim().isEmpty()) return "";
             if (Acceptable.isValid(email, Acceptable.EMAIL_VALID)) {
-                target.setEmail(email);
-                break;
+                return email;
             }
             System.out.println("Data is invalid!. Re-enter ...");
         }
-        
+    }
+    
+    public String getMountainCode(boolean isUpdate, controller.MountainController mountainController) {
         while (true) {
             String mountainCode = this.getString(isUpdate ? "Update Mountain Code (or Enter to skip): " : "Enter Mountain Code: ");
-            if (isUpdate && mountainCode.trim().isEmpty()) break;
+            if (isUpdate && mountainCode.trim().isEmpty()) return "";
             
             boolean validMountain = false;
             for (model.Mountain m : mountainController) {
@@ -94,17 +97,9 @@ public class Inputter {
                 }
             }
             if (validMountain) {
-                target.setMountainCode(mountainCode);
-                break;
+                return mountainCode;
             }
             System.out.println("Invalid Mountain Code! Please check MountainList.csv.");
         }
-        
-        double tuitionFee = 6000000;
-        if (target.getPhone().matches(Acceptable.VIETTEL_VALID) || target.getPhone().matches(Acceptable.VNPT_VALID)) {
-            tuitionFee = tuitionFee * 0.65;
-            System.out.println("You get a 35% discount.");
-        }
-        target.setTutionFee(tuitionFee);
     }
 }
