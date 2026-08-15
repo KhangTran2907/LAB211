@@ -129,10 +129,20 @@ public class StudentController extends ArrayList<Student> {
             System.out.println("ID already exists! Please re-enter.");
         }
         
-        Student student = new Student();
-        student.setID(id);
-        inputter.enterStudentInfo(student, mountainController, false);
-        this.add(student);
+        String name = inputter.getStudentName(false);
+        String phone = inputter.getStudentPhone(false);
+        String email = inputter.getStudentEmail(false);
+        String mountainCode = inputter.getMountainCode(false, mountainController);
+        
+        double tuitionFee = 6000000;
+        if (phone.matches(utils.Acceptable.VIETTEL_VALID) || phone.matches(utils.Acceptable.VNPT_VALID)) {
+            tuitionFee = tuitionFee * 0.65;
+            System.out.println("You get a 35% discount (Viettel/VNPT).");
+        }
+        
+        Student newStudent = new Student(id, name, phone, email, mountainCode, tuitionFee);
+        
+        this.add(newStudent);
         this.saved = false;
         System.out.println("New registration added successfully!");
     }
@@ -154,7 +164,24 @@ public class StudentController extends ArrayList<Student> {
             return;
         }
         
-        inputter.enterStudentInfo(target, mountainController, true);
+        String newName = inputter.getStudentName(true);
+        if (!newName.isEmpty()) target.setName(newName);
+        
+        String newPhone = inputter.getStudentPhone(true);
+        if (!newPhone.isEmpty()) target.setPhone(newPhone);
+        
+        String newEmail = inputter.getStudentEmail(true);
+        if (!newEmail.isEmpty()) target.setEmail(newEmail);
+        
+        String newMountainCode = inputter.getMountainCode(true, mountainController);
+        if (!newMountainCode.isEmpty()) target.setMountainCode(newMountainCode);
+        
+        double tuitionFee = 6000000;
+        if (target.getPhone().matches(utils.Acceptable.VIETTEL_VALID) || target.getPhone().matches(utils.Acceptable.VNPT_VALID)) {
+            tuitionFee = tuitionFee * 0.65;
+            System.out.println("Congratulations! You get a 35% discount (Viettel/VNPT).");
+        }
+        target.setTutionFee(tuitionFee);
         
         this.saved = false;
         System.out.println("Update registration successfully!");
