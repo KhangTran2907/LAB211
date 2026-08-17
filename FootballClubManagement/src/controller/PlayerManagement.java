@@ -16,8 +16,9 @@ import java.util.List;
 
 public class PlayerManagement implements IManager<Player> {
     private List<Player> playerList;
-    private ClubManagement clubManagement; // Dependency to access Club data
+    private ClubManagement clubManagement;
     private Inputter inputter;
+    private boolean isChanged = false;
 
     public PlayerManagement(ClubManagement clubManagement) {
         this.playerList = new ArrayList<>();
@@ -29,7 +30,11 @@ public class PlayerManagement implements IManager<Player> {
         return playerList;
     }
 
-    // Core search logic used internally
+    public boolean isChanged() {
+        return isChanged;
+    }
+
+
     @Override
     public Player searchById(String id) {
         for (Player p : playerList) {
@@ -40,11 +45,10 @@ public class PlayerManagement implements IManager<Player> {
         return null;
     }
 
-    // Helper: Validate if a shirt number already exists in a specific club
+  
     private boolean isShirtNumberExist(String clubId, int shirtNumber, String excludePlayerId) {
         for (Player p : playerList) {
             if (p.getClubId().equalsIgnoreCase(clubId) && p.getShirtNumber() == shirtNumber) {
-                // When updating, we ignore the shirt number of the player being updated
                 if (excludePlayerId == null || !p.getId().equalsIgnoreCase(excludePlayerId)) {
                     return true;
                 }
@@ -53,7 +57,7 @@ public class PlayerManagement implements IManager<Player> {
         return false;
     }
 
-    // Function 6: List all players in ascending order of club names; if same club, sort by shirt number ascending.
+ 
     @Override
     public void displayAll() {
         if (playerList.isEmpty()) {
@@ -61,7 +65,7 @@ public class PlayerManagement implements IManager<Player> {
             return;
         }
 
-        // Create a copy to sort without changing the original order in the list
+       
         List<Player> sortedList = new ArrayList<>(playerList);
 
         Collections.sort(sortedList, new Comparator<Player>() {
@@ -73,12 +77,11 @@ public class PlayerManagement implements IManager<Player> {
                 String clubName1 = (c1 != null) ? c1.getClubName() : "";
                 String clubName2 = (c2 != null) ? c2.getClubName() : "";
 
-                // Sort by Club Name Ascending
+               
                 int nameCompare = clubName1.compareToIgnoreCase(clubName2);
                 if (nameCompare != 0) {
                     return nameCompare;
                 }
-                // If same club, sort by Shirt Number Ascending
                 return Integer.compare(p1.getShirtNumber(), p2.getShirtNumber());
             }
         });
@@ -96,7 +99,7 @@ public class PlayerManagement implements IManager<Player> {
         System.out.println("----------------------------------------------------------------------------------------------------------");
     }
 
-    // Function 8: Add a new player
+ 
     @Override
     public void add() {
         System.out.println("--- Add New Player ---");
@@ -126,17 +129,18 @@ public class PlayerManagement implements IManager<Player> {
             if (isShirtNumberExist(clubId, shirtNumber, null)) {
                 System.out.println("This shirt number already exists in this club!");
                 System.out.println("Add player failed.");
-                return; // Abort addition as per constraint behavior
+                return; 
             }
             break;
         }
 
         Player newPlayer = new Player(id, clubId, name, position, shirtNumber);
         playerList.add(newPlayer);
+        isChanged = true;
         System.out.println("Player added successfully!");
     }
 
-    // Function 10: Update a player by ID (Core logic)
+  
     @Override
     public void update(String id) {
         Player player = searchById(id);
@@ -166,16 +170,17 @@ public class PlayerManagement implements IManager<Player> {
             }
         }
 
+        isChanged = true;
         System.out.println("Player updated successfully!");
     }
 
-    // Function 10: Update a player by ID (UI wrapper)
+
     public void updatePlayer() {
         String id = inputter.getStringNonEmpty("Enter Player ID to update: ");
         update(id);
     }
 
-    // Function 9: Remove a player with ID
+  
     public void removePlayer() {
         System.out.println("--- Remove Player ---");
         String id = inputter.getStringNonEmpty("Enter Player ID to remove: ");
@@ -185,10 +190,11 @@ public class PlayerManagement implements IManager<Player> {
             return;
         }
         playerList.remove(player);
+        isChanged = true;
         System.out.println("Player removed successfully!");
     }
 
-    // Function 7: Search players by partial player name match
+    
     public void searchByName() {
         System.out.println("--- Search Players by Name ---");
         String keyword = inputter.getStringNonEmpty("Enter partial player name: ");
@@ -198,7 +204,6 @@ public class PlayerManagement implements IManager<Player> {
         System.out.printf("%-10s | %-20s | %-10s | %-15s | %-5s\n", "Player ID", "Player Name", "Club ID", "Position", "Shirt");
         System.out.println("-----------------------------------------------------------------------------------------");
         for (Player p : playerList) {
-            // Case-insensitive partial match
             if (p.getName().toLowerCase().contains(keyword.toLowerCase())) {
                 System.out.printf("%-10s | %-20s | %-10s | %-15s | %-5d\n", 
                         p.getId(), p.getName(), p.getClubId(), p.getPosition(), p.getShirtNumber());
@@ -212,7 +217,7 @@ public class PlayerManagement implements IManager<Player> {
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
-    // Function 11: List all players by a specific position
+   
     public void listByPosition() {
         System.out.println("--- List Players by Position ---");
         String position = inputter.getStringNonEmpty("Enter Position to search: ");
@@ -222,7 +227,6 @@ public class PlayerManagement implements IManager<Player> {
         System.out.printf("%-10s | %-20s | %-10s | %-15s | %-5s\n", "Player ID", "Player Name", "Club ID", "Position", "Shirt");
         System.out.println("-----------------------------------------------------------------------------------------");
         for (Player p : playerList) {
-            // Exact match for position, but case-insensitive is better for UX
             if (p.getPosition().equalsIgnoreCase(position)) {
                 System.out.printf("%-10s | %-20s | %-10s | %-15s | %-5d\n", 
                         p.getId(), p.getName(), p.getClubId(), p.getPosition(), p.getShirtNumber());
@@ -236,9 +240,9 @@ public class PlayerManagement implements IManager<Player> {
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
-    // Function 13: Load data from file
+ 
     public boolean loadData(String filename) {
-        playerList.clear(); // Clear current data
+        playerList.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -261,7 +265,7 @@ public class PlayerManagement implements IManager<Player> {
                     System.out.println("Load data failed! Invalid Position: " + line);
                     return false;
                 }
-                // Standardize case
+              
                 position = position.substring(0, 1).toUpperCase() + position.substring(1).toLowerCase();
                 
                 int shirtNumber;
@@ -297,18 +301,19 @@ public class PlayerManagement implements IManager<Player> {
         }
     }
 
-    // Function 12: Save data to file
+   
     public void saveData(String filename) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
             for (Player p : playerList) {
                 pw.println(p.getId() + "," + p.getClubId() + "," + p.getName() + "," + p.getPosition() + "," + p.getShirtNumber());
             }
+            isChanged = false;
         } catch (Exception e) {
             System.out.println("Error saving players to " + filename);
         }
     }
 
-    // Wrap both saves into one method to avoid logic in switch-case
+  
     public void saveAllData(String clubFile, String playerFile) {
         clubManagement.saveData(clubFile);
         this.saveData(playerFile);

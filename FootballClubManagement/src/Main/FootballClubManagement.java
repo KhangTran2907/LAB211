@@ -39,10 +39,11 @@ public class FootballClubManagement {
             System.out.println("10. Update a player with an ID");
             System.out.println("11. List all players by a specific position");
             System.out.println("12. Save data to files");
-            System.out.println("13. Quit program");
+            System.out.println("13. Load data from files");
+            System.out.println("14. Quit program");
             System.out.println("==========================================");
 
-            choice = inputter.getInt("Enter your choice (1-13): ");
+            choice = inputter.getInt("Enter your choice (1-14): ");
 
             switch (choice) {
                 case 1:
@@ -82,11 +83,26 @@ public class FootballClubManagement {
                     playerManagement.saveAllData(CLUBS_FILE, PLAYERS_FILE);
                     break;
                 case 13:
+                    System.out.println("Loading data...");
+                    boolean loadC = clubManagement.loadData(CLUBS_FILE);
+                    boolean loadP = playerManagement.loadData(PLAYERS_FILE);
+                    if (loadC && loadP) {
+                        System.out.println("Load data successfully!");
+                    } else {
+                        System.out.println("Load data failed!");
+                    }
+                    break;
+                case 14:
                     System.out.println("Exiting the program...");
+                    if (clubManagement.isChanged() || playerManagement.isChanged()) {
+                        System.out.println("Changes detected. Auto-saving to files...");
+                        playerManagement.saveAllData(CLUBS_FILE, PLAYERS_FILE);
+                        System.out.println("Auto-save completed.");
+                    }
                     break;
                 default:
-                    System.out.println("Invalid choice. Please select from 1 to 13.");
+                    System.out.println("Invalid choice. Please select from 1 to 14.");
             }
-        } while (choice != 13);
+        } while (choice != 14);
     }
 }

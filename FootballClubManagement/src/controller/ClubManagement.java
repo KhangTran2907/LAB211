@@ -14,6 +14,7 @@ import java.util.List;
 public class ClubManagement implements IManager<Club> {
     private List<Club> clubList;
     private Inputter inputter;
+    private boolean isChanged = false;
 
     public ClubManagement() {
         this.clubList = new ArrayList<>();
@@ -23,6 +24,10 @@ public class ClubManagement implements IManager<Club> {
     // Provide access to the list for File IO and PlayerManagement
     public List<Club> getClubList() {
         return clubList;
+    }
+
+    public boolean isChanged() {
+        return isChanged;
     }
 
     // Function 1: List of all clubs
@@ -93,6 +98,7 @@ public class ClubManagement implements IManager<Club> {
 
         Club newClub = new Club(id, name, sponsor, budget);
         clubList.add(newClub);
+        isChanged = true;
         System.out.println("Club added successfully!");
     }
 
@@ -127,6 +133,7 @@ public class ClubManagement implements IManager<Club> {
             }
         }
 
+        isChanged = true;
         System.out.println("Club updated successfully!");
     }
     
@@ -209,6 +216,7 @@ public class ClubManagement implements IManager<Club> {
             for (Club club : clubList) {
                 pw.println(club.getClubId() + "," + club.getClubName() + "," + club.getSponsorBrand() + "," + club.getBudget());
             }
+            isChanged = false;
         } catch (Exception e) {
             System.out.println("Error saving clubs to " + filename);
         }
